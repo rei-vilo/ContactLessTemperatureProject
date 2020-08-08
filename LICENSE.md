@@ -84,9 +84,9 @@ You means the individual or entity exercising the Licensed Rights under this Pub
 
 + Subject to the terms and conditions of this Public License, the Licensor hereby grants You a worldwide, royalty-free, non-sublicensable, non-exclusive, irrevocable license to exercise the Licensed Rights in the Licensed Material to:
 
- + reproduce and Share the Licensed Material, in whole or in part, for NonCommercial purposes only; and
+    + reproduce and Share the Licensed Material, in whole or in part, for NonCommercial purposes only; and
 
- + produce, reproduce, and Share Adapted Material for NonCommercial purposes only.
+    + produce, reproduce, and Share Adapted Material for NonCommercial purposes only.
 
 + Exceptions and Limitations. For the avoidance of doubt, where Exceptions and Limitations apply to Your use, this Public License does not apply, and You do not need to comply with its terms and conditions.
 
@@ -96,11 +96,11 @@ You means the individual or entity exercising the Licensed Rights under this Pub
 
 + Downstream recipients.
 
- + Offer from the Licensor – Licensed Material. Every recipient of the Licensed Material automatically receives an offer from the Licensor to exercise the Licensed Rights under the terms and conditions of this Public License.
+    + Offer from the Licensor – Licensed Material. Every recipient of the Licensed Material automatically receives an offer from the Licensor to exercise the Licensed Rights under the terms and conditions of this Public License.
 
- + Additional offer from the Licensor – Adapted Material. Every recipient of Adapted Material from You automatically receives an offer from the Licensor to exercise the Licensed Rights in the Adapted Material under the conditions of the Adapter’s License You apply.
+    + Additional offer from the Licensor – Adapted Material. Every recipient of Adapted Material from You automatically receives an offer from the Licensor to exercise the Licensed Rights in the Adapted Material under the conditions of the Adapter’s License You apply.
 
- + No downstream restrictions. You may not offer or impose any additional or different terms or conditions on, or apply any Effective Technological Measures to, the Licensed Material if doing so restricts exercise of the Licensed Rights by any recipient of the Licensed Material.
+    + No downstream restrictions. You may not offer or impose any additional or different terms or conditions on, or apply any Effective Technological Measures to, the Licensed Material if doing so restricts exercise of the Licensed Rights by any recipient of the Licensed Material.
 
 + No endorsement. Nothing in this Public License constitutes or may be construed as permission to assert or imply that You are, or that Your use of the Licensed Material is, connected with, or sponsored, endorsed, or granted official status by, the Licensor or others designated to receive attribution as provided in Section 3(a)(1)(A)(i).
 
@@ -122,15 +122,15 @@ If You Share the Licensed Material (including in modified form), You must:
 
 + retain the following if it is supplied by the Licensor with the Licensed Material:
 
-identification of the creator(s) of the Licensed Material and any others designated to receive attribution, in any reasonable manner requested by the Licensor (including by pseudonym if designated);
+    + identification of the creator(s) of the Licensed Material and any others designated to receive attribution, in any reasonable manner requested by the Licensor (including by pseudonym if designated);
 
- + copyright notice;
+    + copyright notice;
 
- + notice that refers to this Public License;
+    + notice that refers to this Public License;
 
- + notice that refers to the disclaimer of warranties;
+    + notice that refers to the disclaimer of warranties;
 
- + URI or hyperlink to the Licensed Material to the extent reasonably practicable;
+    + URI or hyperlink to the Licensed Material to the extent reasonably practicable;
 
 + indicate if You modified the Licensed Material and retain an indication of any previous modifications; and
 
