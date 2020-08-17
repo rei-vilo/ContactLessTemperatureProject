@@ -1,6 +1,6 @@
 # Contactless Temperature Project
 
-How to check the temperature with no contact? The project combines PIR detection, IR camera and hand-gesture recognition for perfect safety.
+How to check the temperature with no contact? The project combines PIR detection, IR camera and hand-gesture recognition for perfect safety. An IoT extension allows to operate it remotely.
 
 ![](https://github.com/rei-vilo/ContactLessTemperatureProject/blob/master/Schematics.jpeg)
 
