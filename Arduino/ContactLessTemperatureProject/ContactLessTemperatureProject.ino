@@ -8,7 +8,7 @@
 ///
 /// @author		Rei Vilo
 /// @author		https://embeddedcomputing.weebly.com
-/// @date		07/08/2020 10:32
+/// @date		07 Aug 2020 10:32
 /// @version	103
 ///
 /// @copyright	(c) Rei Vilo, 2020
@@ -140,6 +140,9 @@ enum eStatus
 };
 
 eStatus status = statusNone;
+
+// Other
+bool doFlag = true;
 
 // Prototypes
 // !!! Help: http://bit.ly/2TAbgoI
@@ -447,7 +450,11 @@ void doInitialisation()
     uint16_t y = 0;
 
     Serial.begin(115200);
-    Serial.println("--- doInitialisation");
+    if (doFlag)
+    {
+        Serial.println("--- doInitialisation");
+    }
+    doFlag = false;
 
     Serial.print("myScreen.begin...");
     myScreen.begin();
@@ -557,7 +564,11 @@ void doInitialisation()
 
 void doSleep()
 {
-    Serial.println("--- doSleep");
+    if (doFlag)
+    {
+        Serial.println("--- doSleep");
+    }
+    doFlag = false;
 
     displayScreen(screenNone);
     digitalWrite(LCD_BACKLIGHT, LOW);
@@ -568,8 +579,11 @@ void doSleep()
 
 void doWakeup()
 {
-    Serial.println("--- doWakeup");
-
+    if (doFlag)
+    {
+        Serial.println("--- doWakeup");
+    }
+    doFlag = false;
     if (digitalRead(myPIR) == HIGH)
     {
         digitalWrite(LCD_BACKLIGHT, HIGH);
@@ -585,7 +599,12 @@ void doWakeup()
 
 void doPicture()
 {
-    Serial.println("--- doPicture");
+    if (doFlag)
+    {
+        Serial.println("--- doPicture");
+    }
+    doFlag = false;
+
     status = statusNone;
     myScreen.fillScreen(0x0000);
 
@@ -693,7 +712,7 @@ void doPicture()
         Serial.println(maxL);
         Serial.print("count30 (>30.0oC)= ");
         Serial.println(count37);
-        Serial.print("count30 (>37.3oC)= ");
+        Serial.print("count37 (>37.3oC)= ");
         Serial.println(count37);
 
         if (count30 < 4)
@@ -744,7 +763,11 @@ void doPicture()
 
 void doQuestion()
 {
-    Serial.println("--- doQuestion");
+    if (doFlag)
+    {
+        Serial.println("--- doQuestion");
+    }
+    doFlag = false;
     Serial.print("status= ");
     Serial.println(status);
 
@@ -837,7 +860,11 @@ void doQuestion()
 
 void doResult()
 {
-    Serial.println("--- doResult");
+    if (doFlag)
+    {
+        Serial.println("--- doResult");
+    }
+    doFlag = false;
 
 #if (OPTION_WIFI == 1)
     publishMQTT("Thermal/Action", "Exit");
@@ -853,7 +880,11 @@ void doResult()
 
 void doAssistance()
 {
-    Serial.println("--- doAssistance");
+    if (doFlag)
+    {
+        Serial.println("--- doAssistance");
+    }
+    doFlag = false;
 
     switch (transition)
     {
@@ -912,6 +943,7 @@ void loop()
     }
 
     // FSM main loop
+    oldState = state;
     switch (state)
     {
         case ST_INITIALISATION:
@@ -997,5 +1029,9 @@ void loop()
         default:
 
             break;
+    }
+    if (state != oldState)
+    {
+        doFlag = true;
     }
 }
