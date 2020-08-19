@@ -9,7 +9,7 @@
 /// @author		Rei Vilo
 /// @author		https://embeddedcomputing.weebly.com
 /// @date		07 Aug 2020 10:32
-/// @version	103
+/// @version	104
 ///
 /// @copyright	(c) Rei Vilo, 2020
 /// @copyright	CC = BY SA NC
@@ -27,8 +27,8 @@
 ///
 /// @author		Rei Vilo
 /// @author		https://embeddedcomputing.weebly.com
-/// @date		07/08/2020 10:32
-/// @version    103
+/// @date		07 Aug 2020 10:32
+/// @version    104
 ///
 /// @copyright	(c) Rei Vilo, 2020
 /// @copyright	CC = BY SA NC
@@ -464,7 +464,7 @@ void doInitialisation()
 
     myScreen.setTextColor(0xffff, 0x0000);
     myScreen.setFreeFont(FSSB12);
-    myScreen.drawString("Initialisation", 0, y, GFXFF);
+    myScreen.drawString("Initialisation...", 0, y, GFXFF);
     myScreen.setFreeFont(FSS9);
     y += myScreen.fontHeight();
     myScreen.drawString("myScreen.begin... done", 0, y, GFXFF);
@@ -554,6 +554,8 @@ void doInitialisation()
     myScreen.drawString("WiFi and MQTT desactivated", 0, y, GFXFF);
 #endif
 
+    myScreen.setFreeFont(FSSB12);
+    myScreen.drawString("Initialisation... done", 0, 0, GFXFF);
     wait(3);
     pinMode(LCD_BACKLIGHT, OUTPUT);
     digitalWrite(LCD_BACKLIGHT, LOW);
@@ -711,7 +713,7 @@ void doPicture()
         Serial.print("Local maximum (oC)= ");
         Serial.println(maxL);
         Serial.print("count30 (>30.0oC)= ");
-        Serial.println(count37);
+        Serial.println(count30);
         Serial.print("count37 (>37.3oC)= ");
         Serial.println(count37);
 
