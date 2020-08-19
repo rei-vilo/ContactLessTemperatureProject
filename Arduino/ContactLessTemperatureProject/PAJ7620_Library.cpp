@@ -7,7 +7,7 @@
 //
 // Project 		CLTP_Gestures
 //
-// Created by 	Rei Vilo, 14 Aug 2020 09:57
+// Created by 	Rei Vilo, 14/08/2020 09:57
 // 				https://embeddedcomputing.weebly.com
 //
 // Copyright 	(c) Rei Vilo, 2020
