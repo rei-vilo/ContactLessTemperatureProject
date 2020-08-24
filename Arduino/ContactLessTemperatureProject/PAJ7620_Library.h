@@ -3,7 +3,7 @@
 /// @brief		Class library header
 /// @details	C++ wrapper for PAJ7620 library
 /// @n
-/// @n @b		Project CLTP_Gestures
+/// @n @b		Project ContactLessTemperatureProject
 /// @n @a		Developed with embedXcode+: https://embedXcode.weebly.com
 ///
 /// @author		Rei Vilo

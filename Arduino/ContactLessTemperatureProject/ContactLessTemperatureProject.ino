@@ -1,7 +1,7 @@
 ///
 /// @mainpage	ContactLessTemperatureProject
 ///
-/// @details	Description of the project
+/// @details	Remote Contact Less Temperature Project
 /// @n
 /// @n
 /// @n @a		Developed with [embedXcode+](https://embedXcode.weebly.com)
@@ -9,7 +9,7 @@
 /// @author		Rei Vilo
 /// @author		https://embeddedcomputing.weebly.com
 /// @date		07 Aug 2020 10:32
-/// @version	105
+/// @version	106
 ///
 /// @copyright	(c) Rei Vilo, 2020
 /// @copyright	CC = BY SA NC
@@ -28,7 +28,7 @@
 /// @author		Rei Vilo
 /// @author		https://embeddedcomputing.weebly.com
 /// @date		07 Aug 2020 10:32
-/// @version    105
+/// @version    106
 ///
 /// @copyright	(c) Rei Vilo, 2020
 /// @copyright	CC = BY SA NC
@@ -75,6 +75,12 @@ volatile bool commandMQTT = false;
 
 // Define structures and classes
 #define myPIR A0
+#define myButtonC 30
+///
+/// @brief    Interpolation
+/// @note     8=default=AMG8833, 16 or 24
+///
+#define INTERPOLATION 16
 AMG8833 myAMG8833;
 String thermalCheckString = "";
 String thermalLocalString = "";
@@ -83,6 +89,11 @@ uint8_t gesture = 0;
 
 // AMG8833 thermal picture
 float thermalPicture[PIXEL_NUM] = {0};
+
+#if (INTERPOLATION > 8)
+#include "Interpolation.h"
+float interpolatedPicture[INTERPOLATION * INTERPOLATION] = {0};
+#endif
 
 // Colours constants
 const uint16_t RGB565[] =
@@ -143,6 +154,7 @@ eStatus status = statusNone;
 
 // Other
 bool doFlag = true;
+uint64_t timeStart;
 
 // Prototypes
 // !!! Help: http://bit.ly/2TAbgoI
@@ -446,7 +458,7 @@ void publishMQTT(String topic, String payload)
 // Functions
 void doInitialisation()
 {
-    uint8_t count;
+    uint8_t countWhile;
     uint16_t y = 0;
 
     Serial.begin(115200);
@@ -472,6 +484,7 @@ void doInitialisation()
     y += myScreen.fontHeight();
     myScreen.drawString("PIR.begin... ", 0, y, GFXFF);
     pinMode(myPIR, INPUT);
+    pinMode(myButtonC, INPUT_PULLUP);
     myScreen.drawString("PIR.begin... done", 0, y, GFXFF);
 
     y += myScreen.fontHeight();
@@ -484,17 +497,19 @@ void doInitialisation()
     y += myScreen.fontHeight();
     myScreen.drawString("myAMG8833.init... ", 0, y, GFXFF);
     Serial.print("myAMG8833.init...");
-    count = 4;
-    while ((myAMG8833.init() != NO_ERROR) and (count > 0))
+    countWhile = 4;
+    while ((myAMG8833.init() != NO_ERROR) and (countWhile > 0))
     {
-        Serial.print(count);
+        Serial.print(countWhile);
         delay(1000);
-        count--;
+        countWhile--;
     }
-    if (count == 0)
+    if (countWhile == 0)
     {
         Serial.println(" ERROR");
         myScreen.drawString("myAMG8833.init... ERROR", 0, y, GFXFF);
+        myScreen.setFreeFont(FSSB12);
+        myScreen.drawString("Initialisation... ERROR", 0, 0, GFXFF);
         while (1);
     }
     myScreen.drawString("myAMG8833.init... done", 0, y, GFXFF);
@@ -503,17 +518,19 @@ void doInitialisation()
     y += myScreen.fontHeight();
     myScreen.drawString("myPAJ7620.init... ", 0, y, GFXFF);
     Serial.print("myPAJ7620.init...");
-    count = 4;
-    while ((myPAJ7620.begin() != false) and (count > 0))
+    countWhile = 4;
+    while ((myPAJ7620.begin() != false) and (countWhile > 0))
     {
-        Serial.print(count);
+        Serial.print(countWhile);
         delay(1000);
-        count--;
+        countWhile--;
     }
-    if (count == 0)
+    if (countWhile == 0)
     {
         myScreen.drawString("myPAJ7620.init... ERROR", 0, y, GFXFF);
         Serial.println(" ERROR");
+        myScreen.setFreeFont(FSSB12);
+        myScreen.drawString("Initialisation... ERROR", 0, 0, GFXFF);
         while (1);
     }
     myScreen.drawString("myPAJ7620.init... done", 0, y, GFXFF);
@@ -529,16 +546,29 @@ void doInitialisation()
     myScreen.drawString("WiFi.begin... ", 0, y, GFXFF);
     Serial.print("WiFi.begin...");
     WiFi.begin(ssidWiFi, passwordWiFi);
-    while (WiFi.status() != WL_CONNECTED)
+    countWhile = 64;
+    while ((WiFi.status() != WL_CONNECTED) and (countWhile > 0))
     {
         delay(500);
         Serial.print(".");
+        countWhile--;
+    }
+    if (countWhile == 0)
+    {
+        myScreen.drawString("WiFi.begin... ERROR", 0, y, GFXFF);
+        Serial.println(" ERROR");
+        myScreen.setFreeFont(FSSB12);
+        myScreen.drawString("Initialisation... ERROR", 0, 0, GFXFF);
+        while (1);
     }
     myScreen.drawString("WiFi.begin... connected", 0, y, GFXFF);
     Serial.println(" connected");
 
+    // WiFi.ping() does not seem to be implemented
+    // uint8_t result = WiFi.ping(brokerIP);
+    
     y += myScreen.fontHeight();
-    text = "IP: " + String(WiFi.localIP());
+    text = "IP: " + WiFi.localIP().toString();
     myScreen.drawString(text.c_str(), 0, y, GFXFF);
     Serial.println(text);
 
@@ -586,7 +616,7 @@ void doWakeup()
         Serial.println("--- doWakeup");
     }
     doFlag = false;
-    if (digitalRead(myPIR) == HIGH)
+    if ((digitalRead(myPIR) == HIGH) || (digitalRead(myButtonC)  == LOW))
     {
         digitalWrite(LCD_BACKLIGHT, HIGH);
 
@@ -596,6 +626,9 @@ void doWakeup()
 
         transition = TR_picture;
         myScreen.fillScreen(0x0000);
+        timeStart = millis();
+        Serial.println();
+        Serial.println("=== New case");
     }
 }
 
@@ -622,6 +655,7 @@ void doPicture()
     uint8_t count37 = 0;
     uint8_t count30 = 0;
 
+    // Scale
     for (uint8_t i = 0; i < 18; i++)
     {
         myScreen.fillRect(270, 20 + 10 * i, 20, 10, RGB565[i]);
@@ -634,6 +668,9 @@ void doPicture()
 
     while ((countWhile > 0) and (count30 < 4))
     {
+        Serial.print("countWhile= ");
+        Serial.println(countWhile);
+
         count37 = 0;
         count30 = 0;
 
@@ -646,14 +683,8 @@ void doPicture()
         for (int i = 0; i < PIXEL_NUM; i++)
         {
             float v = thermalPicture[i];
-            if (v < minL)
-            {
-                minL = v;
-            }
-            if (v > maxL)
-            {
-                maxL = v;
-            }
+            minL = min(minL, v);
+            maxL = max(maxL, v);
         }
         Serial.print("minL= ");
         Serial.println(minL);
@@ -706,8 +737,28 @@ void doPicture()
         }
         countWhile--;
 
-        Serial.print("countWhile= ");
-        Serial.println(countWhile);
+#if (INTERPOLATION > 8)
+        interpolate_image(thermalPicture, 8, 8, interpolatedPicture, INTERPOLATION, INTERPOLATION);
+        uint8_t square = 240 / INTERPOLATION;
+        
+        Serial.print("square= ");
+        Serial.println(square);
+        
+        for (uint8_t i = 0; i < INTERPOLATION; i++)
+        {
+            for (uint8_t j = 0; j < INTERPOLATION; j++)
+            {
+                float valueL = interpolatedPicture[(i * INTERPOLATION) + j];
+                // Local display
+                valueL = max(minL, valueL);
+                valueL = min(maxL, valueL);
+                uint8_t indexL = maxIndex - (uint8_t)((valueL - minL) / (maxL - minL) * maxIndex);
+                myScreen.fillRect(i * square, j * square, square, square, RGB565[indexL]);
+            }
+        }
+#endif
+
+        
         Serial.print("thermalCheckString= ");
         Serial.println(thermalCheckString);
         Serial.print("Local maximum (oC)= ");
@@ -779,7 +830,6 @@ void doQuestion()
     // . to the right to call for assistance
 
     uint8_t countWhile = 4;
-    uint64_t timeWhile = millis() + 30000; // 30s
     bool flag = true;
     gesture = GES_NONE_FLAG;
 
@@ -789,6 +839,7 @@ void doQuestion()
         Serial.print(countWhile);
         Serial.print("\t");
 
+        uint64_t timeWhile = millis() + 15000; // 15s
         while ((millis() < timeWhile) and (gesture == GES_NONE_FLAG))
         {
             Serial.print(".");
@@ -878,6 +929,9 @@ void doResult()
 
     oldTransition = transition;
     transition = TR_wait;
+
+    Serial.print("=== Case closed at (ms) ");
+    Serial.println((uint32_t)(millis() - timeStart));
 }
 
 void doAssistance()
@@ -904,6 +958,9 @@ void doAssistance()
 
     oldTransition = transition;
     transition = TR_call;
+
+    Serial.print("=== Case closed at (ms) ");
+    Serial.println((uint32_t)(millis() - timeStart));
 }
 
 
@@ -934,7 +991,7 @@ void loop()
         myMQTT.publish("Thermal/State", String(state).c_str());
         myMQTT.publish("Thermal/Transition", String(transition).c_str());
 #endif
-        Serial.print(millis());
+        Serial.print((uint32_t)(millis() - timeStart));
         Serial.print("\t");
         Serial.print("Transition= ");
         Serial.print(transition);
