@@ -4,11 +4,11 @@ How to check the temperature with no contact? The project combines PIR detection
 
 ![](https://github.com/rei-vilo/ContactLessTemperatureProject/blob/master/Images/Schematics.jpeg)
 
-Release #1.0.3 adds remote dashboard.
+Release [1.0.3](https://github.com/rei-vilo/ContactLessTemperatureProject/releases/tag/1.0.3) adds remote dashboard.
 
 ![](https://github.com/rei-vilo/ContactLessTemperatureProject/blob/master/Images/Dashboard.png)
 
-Release #1.0.6 adds 16x16 interpoled image resample from 8x8 camera on Wio Terminal screen. 
+Release [1.0.6](https://github.com/rei-vilo/ContactLessTemperatureProject/releases/tag/1.0.6) adds 16x16 interpoled image resample from 8x8 camera on Wio Terminal screen. 
 
 ![](https://github.com/rei-vilo/ContactLessTemperatureProject/blob/master/Images/Interpolation.gif)
 
