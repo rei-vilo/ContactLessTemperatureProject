@@ -8,7 +8,7 @@
 ///
 /// @author		Rei Vilo
 /// @author		https://embeddedcomputing.weebly.com
-/// @date		07 Aug 2020 10:32
+/// @date		07 Aug 2020
 /// @version	106
 ///
 /// @copyright	(c) Rei Vilo, 2020
@@ -27,8 +27,8 @@
 ///
 /// @author		Rei Vilo
 /// @author		https://embeddedcomputing.weebly.com
-/// @date		07 Aug 2020 10:32
-/// @version    106
+/// @date		09 Nov 2020
+/// @version    107
 ///
 /// @copyright	(c) Rei Vilo, 2020
 /// @copyright	CC = BY SA NC
@@ -65,7 +65,9 @@
 #include "Credentials.h"
 
 #if (OPTION_WIFI == 1)
-#include "AtWiFi.h"
+//#include "AtWiFi.h"
+#include "rpcWiFi.h"
+
 #include "PubSubClient.h"
 
 WiFiClient myClient;
