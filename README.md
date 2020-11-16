@@ -12,6 +12,8 @@ Release [1.0.6](https://github.com/rei-vilo/ContactLessTemperatureProject/releas
 
 ![](https://github.com/rei-vilo/ContactLessTemperatureProject/blob/master/Images/Interpolation.gif)
 
+Release [1.0.7](https://github.com/rei-vilo/ContactLessTemperatureProject/releases/tag/1.0.7) updates support for the [eRPC WiFi library](https://github.com/Seeed-Studio/Seeed_Arduino_rpcWiFi).
+
 
 + See the full tutorial at [Hackster.io](https://www.hackster.io/rei-vilo/contactless-temperature-monitor-6fa25f).
 
