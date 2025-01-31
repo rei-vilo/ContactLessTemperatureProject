@@ -20,7 +20,7 @@
 // Prototypes moved to Interpolation.h
 
 // Code
-float get_point(float *p, uint8_t rows, uint8_t cols, int8_t x, int8_t y)
+float get_point(float * p, uint8_t rows, uint8_t cols, int8_t x, int8_t y)
 {
     if (x < 0)
     {
@@ -41,7 +41,7 @@ float get_point(float *p, uint8_t rows, uint8_t cols, int8_t x, int8_t y)
     return p[y * cols + x];
 }
 
-void set_point(float *p, uint8_t rows, uint8_t cols, int8_t x, int8_t y,
+void set_point(float * p, uint8_t rows, uint8_t cols, int8_t x, int8_t y,
                float f)
 {
     if ((x < 0) || (x >= cols))
@@ -57,7 +57,7 @@ void set_point(float *p, uint8_t rows, uint8_t cols, int8_t x, int8_t y,
 
 // src is a grid src_rows * src_cols
 // dest is a pre-allocated grid, dest_rows*dest_cols
-void interpolate_image(float *src, uint8_t src_rows, uint8_t src_cols, float *dest, uint8_t dest_rows, uint8_t dest_cols)
+void interpolate_image(float * src, uint8_t src_rows, uint8_t src_cols, float * dest, uint8_t dest_rows, uint8_t dest_cols)
 {
     float mu_x = (src_cols - 1.0) / (dest_cols - 1.0);
     float mu_y = (src_rows - 1.0) / (dest_rows - 1.0);
@@ -121,7 +121,7 @@ float bicubicInterpolate(float p[], float x, float y)
 }
 
 // src is rows*cols and dest is a 4-point array passed in already allocated!
-void get_adjacents_1d(float *src, float *dest, uint8_t rows, uint8_t cols, int8_t x, int8_t y)
+void get_adjacents_1d(float * src, float * dest, uint8_t rows, uint8_t cols, int8_t x, int8_t y)
 {
     // Serial.print("("); Serial.print(x); Serial.print(", "); Serial.print(y);
     // Serial.println(")");
@@ -134,14 +134,14 @@ void get_adjacents_1d(float *src, float *dest, uint8_t rows, uint8_t cols, int8_
 }
 
 // src is rows*cols and dest is a 16-point array passed in already allocated!
-void get_adjacents_2d(float *src, float *dest, uint8_t rows, uint8_t cols, int8_t x, int8_t y)
+void get_adjacents_2d(float * src, float * dest, uint8_t rows, uint8_t cols, int8_t x, int8_t y)
 {
     // Serial.print("("); Serial.print(x); Serial.print(", "); Serial.print(y);
     // Serial.println(")");
     float arr[4];
     for (int8_t delta_y = -1; delta_y < 3; delta_y++)   // -1, 0, 1, 2
     {
-        float *row = dest + 4 * (delta_y + 1); // index into each chunk of 4
+        float * row = dest + 4 * (delta_y + 1); // index into each chunk of 4
         for (int8_t delta_x = -1; delta_x < 3; delta_x++)   // -1, 0, 1, 2
         {
             row[delta_x + 1] = get_point(src, rows, cols, x + delta_x, y + delta_y);

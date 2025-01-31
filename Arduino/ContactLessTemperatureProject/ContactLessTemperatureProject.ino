@@ -385,7 +385,7 @@ void displayAnswer(uint8_t number)
 /// @param    payload payload
 /// @param    length length
 ///
-void callbackMQTT(char* topic, byte* payload, unsigned int length)
+void callbackMQTT(char * topic, byte * payload, unsigned int length)
 {
     Serial.print("Received: ");
     Serial.print(topic);
@@ -568,7 +568,7 @@ void doInitialisation()
 
     // WiFi.ping() does not seem to be implemented
     // uint8_t result = WiFi.ping(brokerIP);
-    
+
     y += myScreen.fontHeight();
     text = "IP: " + WiFi.localIP().toString();
     myScreen.drawString(text.c_str(), 0, y, GFXFF);
@@ -742,10 +742,10 @@ void doPicture()
 #if (INTERPOLATION > 8)
         interpolate_image(thermalPicture, 8, 8, interpolatedPicture, INTERPOLATION, INTERPOLATION);
         uint8_t square = 240 / INTERPOLATION;
-        
+
         Serial.print("square= ");
         Serial.println(square);
-        
+
         for (uint8_t i = 0; i < INTERPOLATION; i++)
         {
             for (uint8_t j = 0; j < INTERPOLATION; j++)
@@ -760,7 +760,7 @@ void doPicture()
         }
 #endif
 
-        
+
         Serial.print("thermalCheckString= ");
         Serial.println(thermalCheckString);
         Serial.print("Local maximum (oC)= ");
